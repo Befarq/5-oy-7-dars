@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Article <span>id</span></h1>
+        <div class="article-container">
+
+        </div>
+    </div>
+
+    <script>
+        const articlesContainer = document.querySelector(".article-container");
+
+        const query = window.location.search;
+        const id = query.slice(2)
+        console.log(query);
+        const request = new XMLHttpRequest();
+        request.addEventListener("readystatechange", () => {
+            if (request.readyState == 4 && request.status == 200) {
+                const data = JSON.parse(request.responseText);
+                console.log("salom");
+                // overlay.classList.add("hidden");
+                updateUi(data);
+                // overlay.classList.add("hidden");
+            } else if (request.readyState == 4) {
+                console.log("error");
+                // overlay.classList.add(".hidden");
+            } else {
+                // overlay.classList.remove(".hidden");
+                console.log("loading");
+            }
+        });
+        request.open("get", `http://localhost:3000/articles/${id}`);
+        request.send();
+
+        function updateUi(data) {
+            articlesContainer.innerHTML = `${data.body}`
+        }
+    </script>
+</body>
+
+</html>
